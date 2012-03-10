@@ -1,3 +1,6 @@
+library(rmr)
+source('R/functions.R')
+
 test.input = '2004,3,25,4,1445,1437,1820,1812,AA,399,N275AA,215,215,197,8,8,BOS,MIA,1258,6,12,0,,0,0,0,0,0,0'
 
 print("Input:")
