@@ -1,0 +1,6 @@
+
+Amazon Linux was my first choice for this, but there are problems with the
+package dependencies in their tcl/tk packages which prevents the (easy)
+installation of R from EPEL.
+
+Alas.
