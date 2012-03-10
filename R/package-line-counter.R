@@ -25,7 +25,7 @@ api.lines = data.frame()
 
 for (package in packages) {
 
-	src.files = file.path(jseidman.path, packages.src[[package]])
+	src.files = file.path(jseidman.path, package, packages.src[[package]])
 	src.files = paste(src.files, collapse=' ')
 
 	cmd.line = paste(reverse.grep, pattern, src.files, '|', count.lines)
@@ -43,5 +43,7 @@ for (package in packages) {
 	}
 
 library(ggplot2)
-ggplot(api.lines, aes(x=package, y=lines)) + geom_bar(fill='#4689cc') +
+g = ggplot(api.lines, aes(x=package, y=lines)) + geom_bar(fill='#4689cc') +
 	geom_bar(data=subset(api.lines, lines==min(lines)), fill='#FF6600') + theme_bw()
+
+print(g)
