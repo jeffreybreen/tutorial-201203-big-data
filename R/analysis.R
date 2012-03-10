@@ -3,11 +3,22 @@ library(reshape2)
 library(ggplot2)
 library(doBy)
 
-print(load('out/enroute.times.every8.RData'))
+print(load('out/enroute.time.RData'))
 
-actuals.df = dcast(enroute.times.every8, market~year, value.var='actual')
-actuals.df = subset(actuals.df, !is.na(`1988`) & !is.na(`1998`) & !is.na(`2008`))
+results.df$year = as.numeric(results.df$year) + 1986
+head(results.df)
 
-actuals.df$delta = with(actuals.df, `2008` - `1988`)
-actuals.df$delta.pct = with(actuals.df, delta / `1988`)
-actuals.df = orderBy(~-delta.pct, actuals.df)
+nrow(results.df)
+
+yearly.mean = ddply(results.df, c('year'), summarise,
+						scheduled = weighted.mean(scheduled, flights),
+						actual = weighted.mean(actual, flights),
+						in.air = weighted.mean(in.air, flights),
+					.progress='text')
+
+# yearly.mean$year = as.numeric(yearly.mean$year)
+g = ggplot(yearly.mean) + geom_line(aes(x=year, y=scheduled), color='#CCCC33') +
+	geom_line(aes(x=year, y=actual), color='#FF9900') + 
+	geom_line(aes(x=year, y=in.air), color='#4689cc') + theme_bw() +
+	ylim(c(60, 130)) + ylab('minutes')
+print(g)
